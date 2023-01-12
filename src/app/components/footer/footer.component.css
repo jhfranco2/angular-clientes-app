@@ -1,11 +1,6 @@
-.footer{
-    position: relative;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #111;
-    height: auto;
-    width: 100vw;
-    padding-top: 40px;
-    color: #fff;
+footer {
+    position: absolute;
+    bottom: 0px;
+    height: 60px;
+    width: 100%;
 }
