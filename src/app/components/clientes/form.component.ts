@@ -13,6 +13,8 @@ export class FormComponent implements OnInit {
   titulo: string = 'Crear Cliente';
   cliente: Cliente = new Cliente();
 
+  errores: string[] | any | null;
+
   constructor(private clienteService: ClienteService,
     private router: Router,
     private activateRoute: ActivatedRoute) { }
@@ -36,17 +38,19 @@ export class FormComponent implements OnInit {
   create(): void {
     this.clienteService.create(this.cliente).subscribe(
       {
-        complete: () => {
+        next: (cliente => {
           this.router.navigate(['/clientes']);
           swal.fire(
             'Nuevo Cliente',
-            `Cliente ${this.cliente.nombre} creado con exito.`,
+            `El cliente ${cliente.nombre} ha sido creado con exito`,
             'success')
-        },
-        error: (e) => swal.fire(
-          'Nuevo Cliente',
-          `Cliente ${this.cliente.nombre} no se creado con exito.`,
-          'error')
+        }
+        ), error:
+          (err:any) => {
+            this.errores = err.error.errors as string[];
+            console.error('Código de error desde el backend' + err.status);
+            console.error(err);
+          }
 
       }
     );
@@ -55,14 +59,19 @@ export class FormComponent implements OnInit {
   update(): void {
     this.clienteService.update(this.cliente).subscribe(
       {
-        complete: () => {
+        next: (json: any) => {
           this.router.navigate(['/clientes']);
           swal.fire(
             'Cliente Actualizado',
-            `Cliente ${this.cliente.nombre} actualizado con éxito`,
+            `${json.mensaje}: ${json.cliente.nombre}`,
             'success'
           );
-        }
+        }, error:
+          (err) => {
+            this.errores = err.error.errors as String[];
+            console.error('Código de error desde el backend' + err.status);
+            console.error(err.error.errors);
+          }
       }
     );
   }
