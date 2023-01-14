@@ -31,15 +31,17 @@ export class ClienteService {
   create(cliente: Cliente) {
     return this.http.post(this.url, cliente, { headers: this.httpHeaders }).pipe(
       map((response: any) => response.cliente as Cliente),
-      catchError((e) => {
-        if (e == 400) {
-          return throwError(() => new Error(e));
+      catchError((err) => {
+        if (err.status == 400) {
+          console.log(err.status);
+          return throwError(() => err);
         }
+        console.log(err.error.mensaje);
         Swal.fire(
-          e.error.mensaje,
-          e.error.error,
+          err.error.mensaje,
+          err.error.error,
           'error');
-        return throwError(() => new Error(e));
+          return throwError(()=>err);
       }
       )
     );
@@ -54,7 +56,7 @@ export class ClienteService {
           'Error al editar',
           e.error.mensaje,
           'error');
-        return throwError(() => new Error(e));
+          return throwError(()=>e);
       }
       )
     );
@@ -63,14 +65,14 @@ export class ClienteService {
   update(cliente: Cliente) {
     return this.http.put(`${this.url}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(
       catchError((e) => {
-        if (e == 400) {
-          return throwError(() => new Error(e));
+        if (e.status == 400) {
+          return throwError(()=>e);
         }
         Swal.fire(
           e.error.mensaje,
           e.error.error,
           'error');
-        return throwError(() => new Error(e));
+          return throwError(()=>e);
       }
       )
     );
@@ -84,7 +86,7 @@ export class ClienteService {
           e.error.mensaje,
           e.error.error,
           'error');
-        return throwError(() => new Error(e));
+          return throwError(()=>e);
       }
       )
     );
