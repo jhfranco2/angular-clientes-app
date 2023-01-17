@@ -14,21 +14,28 @@ export class ClientesComponent implements OnInit {
   clientes?: Cliente[];
   cliente: Cliente = new Cliente();
 
-  constructor(private clienteService: ClienteService,private activeRoute:ActivatedRoute) { }
+  constructor(private clienteService: ClienteService, private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    let page = 0;
-    this.clienteService.getClientes(page).pipe(
-      tap(response => {
-        console.log('ClienteService: 3');
-        (response.content as Cliente[]).forEach(cliente => {
-          console.log(cliente.nombre);
+
+    this.activeRoute.paramMap.subscribe((params:any) => {
+      let page: number = +params.get('page');
+      if (!page) {
+        page = 0;
+      }
+      this.clienteService.getClientes(page).pipe(
+        tap(response => {
+          console.log('ClienteService: 3');
+          (response.content as Cliente[]).forEach(cliente => {
+            console.log(cliente.nombre);
+          })
         })
-      })
-    ).subscribe(
-      (response => {
-        this.clientes = response.content as Cliente[]; 
-      }))
+      ).subscribe(
+        (response => {
+          this.clientes = response.content as Cliente[];
+        }))
+    });
+
   }
 
   delete(cliente: Cliente): void {
