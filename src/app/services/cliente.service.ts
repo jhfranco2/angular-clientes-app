@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { DatePipe, formatDate } from '@angular/common';
 import { Cliente } from '../models/cliente';
-import { catchError, Observable, of, throwError } from 'rxjs'
+import { catchError, throwError, tap } from 'rxjs'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -22,10 +23,21 @@ export class ClienteService {
 
   }
 
-  getClientes() {
-    return this.http.get(this.url).pipe(
-      map(response => response as Cliente[])
-    );
+  getClientes(page: number) {
+    return this.http.get(this.url + '/page/' + page).pipe(
+       map((response: any) => {
+        (response.content as Cliente[]).map(
+          cliente => {
+            cliente.nombre = cliente.nombre?.toUpperCase();
+            return cliente;
+          }
+        );
+        return response;
+      })
+      
+      
+      
+    )
   }
 
   create(cliente: Cliente) {
@@ -33,7 +45,6 @@ export class ClienteService {
       map((response: any) => response.cliente as Cliente),
       catchError((err) => {
         if (err.status == 400) {
-          console.log(err.status);
           return throwError(() => err);
         }
         console.log(err.error.mensaje);
@@ -41,7 +52,7 @@ export class ClienteService {
           err.error.mensaje,
           err.error.error,
           'error');
-          return throwError(()=>err);
+        return throwError(() => err);
       }
       )
     );
@@ -56,7 +67,7 @@ export class ClienteService {
           'Error al editar',
           e.error.mensaje,
           'error');
-          return throwError(()=>e);
+        return throwError(() => e);
       }
       )
     );
@@ -66,13 +77,13 @@ export class ClienteService {
     return this.http.put(`${this.url}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(
       catchError((e) => {
         if (e.status == 400) {
-          return throwError(()=>e);
+          return throwError(() => e);
         }
         Swal.fire(
           e.error.mensaje,
           e.error.error,
           'error');
-          return throwError(()=>e);
+        return throwError(() => e);
       }
       )
     );
@@ -86,7 +97,7 @@ export class ClienteService {
           e.error.mensaje,
           e.error.error,
           'error');
-          return throwError(()=>e);
+        return throwError(() => e);
       }
       )
     );
