@@ -13,6 +13,7 @@ export class ClientesComponent implements OnInit {
 
   clientes?: Cliente[];
   cliente: Cliente = new Cliente();
+  paginador:any;
 
   constructor(private clienteService: ClienteService, private activeRoute: ActivatedRoute) { }
 
@@ -23,16 +24,10 @@ export class ClientesComponent implements OnInit {
       if (!page) {
         page = 0;
       }
-      this.clienteService.getClientes(page).pipe(
-        tap(response => {
-          console.log('ClienteService: 3');
-          (response.content as Cliente[]).forEach(cliente => {
-            console.log(cliente.nombre);
-          })
-        })
-      ).subscribe(
+      this.clienteService.getClientes(page).subscribe(
         (response => {
           this.clientes = response.content as Cliente[];
+          this.paginador = response;
         }))
     });
 
