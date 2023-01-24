@@ -25,7 +25,7 @@ export class ClienteService {
 
   getClientes(page: number) {
     return this.http.get(this.url + '/page/' + page).pipe(
-       map((response: any) => {
+      map((response: any) => {
         (response.content as Cliente[]).map(
           cliente => {
             cliente.nombre = cliente.nombre?.toUpperCase();
@@ -34,9 +34,9 @@ export class ClienteService {
         );
         return response;
       })
-      
-      
-      
+
+
+
     )
   }
 
@@ -58,7 +58,7 @@ export class ClienteService {
     );
   }
 
-  getCliente(id?: number) {
+  getCliente(id: number) {
     return this.http.get(`${this.url}/${id}`).pipe(
       catchError(e => {
         this.router.navigate(['/clientes']);
@@ -101,6 +101,27 @@ export class ClienteService {
       }
       )
     );
+  }
+
+  subirFoto(archivo: File  , id) {
+    let formData = new FormData();
+
+    formData.append("archivo", archivo);
+    formData.append("id", id);
+    return this.http.post(`${this.url}/upload`, formData)
+    .pipe(
+      map((response: any) => response.cliente as Cliente)
+      , catchError(
+        (e) => {
+          console.error(e);
+          Swal.fire(
+            e.error.mensaje,
+            e.error.error,
+            'error');
+          return throwError(() => e);
+        }
+      )
+    )
   }
 }
 

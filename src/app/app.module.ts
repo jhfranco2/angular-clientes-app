@@ -19,6 +19,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import{MatDatepickerModule} from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { DetalleComponent } from './components/clientes/detalle/detalle.component';
 
 registerLocaleData(localeES, 'es');
 
@@ -28,7 +29,8 @@ const routes: Routes = [
   { path: 'clientes', component: ClientesComponent },
   { path: 'clientes/page/:page', component: ClientesComponent },
   { path: 'clientes/form', component: FormComponent },
-  { path: 'clientes/form/:id', component: FormComponent }
+  { path: 'clientes/form/:id', component: FormComponent },
+  { path: 'clientes/ver/:id',component:DetalleComponent}
 ]
 
 @NgModule({
@@ -39,7 +41,8 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    DetalleComponent
   ],
   imports: [
     HttpClientModule,
