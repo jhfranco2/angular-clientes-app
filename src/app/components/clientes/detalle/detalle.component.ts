@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Cliente } from 'src/app/models/cliente';
 import { ClienteService } from 'src/app/services/cliente.service';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 export class DetalleComponent implements OnInit {
 
   titulo: string = 'Detalle del cliente';
-  cliente: Cliente;
+  @Input() cliente: Cliente;
 
   fotoSeleccionada: File;
   progreso: number = 0;
@@ -24,18 +24,7 @@ export class DetalleComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.activateRoute.paramMap.subscribe(
-      (params: any) => {
-        let id: number = +params.get('id');
-        if (id) {
-          this.clienteService.getCliente(id).subscribe(
-            (cliente: any) => {
-              this.cliente = cliente;
-            }
-          );
-        }
-      }
-    );
+    
   }
 
   seleccionarFoto(event: any) {
