@@ -10,15 +10,20 @@
                         <li class="list-group-item">{{cliente.email}}</li>
                         <li class="list-group-item">{{cliente.createAt | date:"fullDate"}}</li>
                     </ul>
-                    <div class="input-group">
+                    <div class="input-group mb-3">
                         <input (change)="seleccionarFoto($event)" type="file" class="form-control" id="inputGroupFile04"
                             aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                        <button (click)="subirFoto()" class="btn btn-outline-secondary" type="button"
-                            id="inputGroupFileAddon04">Buscar Imagen</button>
+                        <button (click)="subirFoto()" [disabled]="!fotoSeleccionada" class="btn btn-outline-secondary"
+                            type="button" id="inputGroupFileAddon04">Buscar Imagen</button>
+                    </div>
+                    <div *ngIf="progreso > 0" style="height:40px" class="progress" role="progressbar" aria-label="Example with label"
+                        attr.aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" [ngStyle]="{width: progreso + '%'}">{{progreso}}%</div>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"/>
+                    <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}"
+                        alt="{{cliente.foto}}" class="img-thumbnail rounded" />
                 </div>
             </div>
         </div>
