@@ -49,11 +49,12 @@
         <div class="form-group row">
             <label for="createAt" class="col-form-label col-sm-2 text-center">fecha</label>
             <div class="col-sm-6">
-               <!-- <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" />-->
-               <input matInput [matDatepicker]="miDatapicker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt">
-               <mat-hint>MM/DD/YYYY</mat-hint>
-               <mat-datepicker-toggle matIconSuffix [for]="miDatapicker"></mat-datepicker-toggle>
-               <mat-datepicker #miDatapicker></mat-datepicker>
+                <!-- <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" />-->
+                <input matInput [matDatepicker]="miDatapicker" class="form-control" [(ngModel)]="cliente.createAt"
+                    name="createAt">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="miDatapicker"></mat-datepicker-toggle>
+                <mat-datepicker #miDatapicker></mat-datepicker>
                 <!--<div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
                     <div *ngIf="email.errors?.['required']">
                         Email es requerido
@@ -62,6 +63,15 @@
                         Email debe tener un formato valido
                     </div>
                 </div>-->
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="region" class="col-form-label col-sm-2 text-center">region</label>
+            <div class="col-sm-6">
+                <select [compareWith]="compararRegion" class="form-control" [(ngModel)]="cliente.region" name="region" style="width:500px;">
+                    <option [ngValue]="undefined">----Seleccionar una región ----</option>                   
+                    <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+                </select>
             </div>
         </div>
         <div class="card-body">

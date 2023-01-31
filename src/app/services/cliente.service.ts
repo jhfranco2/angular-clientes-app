@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Region } from '../models/region';
 
 
 @Injectable({
@@ -111,7 +112,11 @@ export class ClienteService {
     const req = new HttpRequest('POST', `${this.url}/upload`, formData, {
       reportProgress: true
     });
-    return this.http.request(req);   
+    return this.http.request(req);
+  }
+
+  getRegiones() {
+    return this.http.get<Region[]>(`${this.url}/regiones`);
   }
 }
 
